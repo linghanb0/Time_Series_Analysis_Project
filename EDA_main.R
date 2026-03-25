@@ -27,5 +27,34 @@ birth_data %>% autoplot(.vars = tfr)
 birth_data %>% autoplot(.vars = tlb)
 
 
-  
 
+# for tfr, investigates initial autocorrelation and pacf
+acf(birth_data$tfr)
+# steady decreasing value indicates some kind of moving average relationship
+pacf(birth_data$tfr)  
+pacf(birth_data$tfr, plot = FALSE)  
+# only significant partial autocorrelation at lag 1, 
+# indicates MA(1) or random walk type structure
+# test this hypothesis
+pacf(diff(birth_data$tfr))
+pacf(diff(birth_data$tfr), plot = FALSE)
+
+# attempts to do a log plot
+birth_data <- birth_data %>% mutate(log_tfr = log(tfr))
+birth_data %>% autoplot(.vars = log_tfr)
+
+# does all the same analyses again
+# for tfr, investigates initial autocorrelation and pacf
+acf(birth_data$log_tfr)
+# steady decreasing value indicates some kind of moving average relationship
+pacf(birth_data$log_tfr)  
+pacf(birth_data$log_tfr, plot = FALSE)  
+# only significant partial autocorrelation at lag 1, 
+# indicates MA(1) or random walk type structure
+# test this hypothesis
+pacf(diff(birth_data$log_tfr))
+pacf(diff(birth_data$tfr), plot = FALSE)
+# possible some kind of autocorrelation with lag of 11ish years?
+pacf(diff(diff(birth_data$log_tfr),11))
+pacf(diff(diff(birth_data$log_tfr),11), plot = FALSE)
+# yeah idk look into it
